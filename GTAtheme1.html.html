@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRAND THEFT GAMING — LOS SANTOS &amp; VICE CITY GAMING LOUNGE</title>
+
+    <!-- Google Fonts: Anton, Bebas Neue, Permanent Marker, Barlow Condensed, Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@600;700;800&family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Custom Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        asphalt: '#0B0C10',
+                        panelDark: '#14161D',
+                        viceAmber: '#F59E0B',
+                        vicePink: '#EC4899',
+                        gtaGreen: '#27AE60',
+                        policeBlue: '#38BDF8',
+                        crispWhite: '#F8FAFC',
+                    },
+                    fontFamily: {
+                        anton: ['Anton', 'sans-serif'],
+                        bebas: ['Bebas Neue', 'sans-serif'],
+                        marker: ['Permanent Marker', 'cursive'],
+                        barlow: ['Barlow Condensed', 'sans-serif'],
+                        inter: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom GTA Box-Art Comic Panel & HUD Styles -->
+    <style>
+        :root {
+            --bg-asphalt: #0B0C10;
+            --surface-panel: #14161D;
+            --vice-amber: #F59E0B;
+            --vice-pink: #EC4899;
+            --gta-green: #27AE60;
+            --police-blue: #38BDF8;
+            --crisp-white: #F8FAFC;
+        }
+
+        body {
+            background-color: var(--bg-asphalt);
+            color: var(--crisp-white);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 0),
+                linear-gradient(135deg, rgba(236, 72, 153, 0.05) 0%, transparent 45%, rgba(56, 189, 248, 0.05) 100%);
+            background-size: 22px 22px, 100% 100%;
+        }
+
+        /* Iconic GTA Outlined Display Typography */
+        .gta-title {
+            font-family: 'Anton', sans-serif;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            -webkit-text-stroke: 2px #000000;
+            paint-order: stroke fill;
+            text-shadow: 4px 4px 0px #000000;
+        }
+
+        .gta-title-sm {
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            -webkit-text-stroke: 1.5px #000000;
+            paint-order: stroke fill;
+            text-shadow: 2px 2px 0px #000000;
+        }
+
+        /* GTA Cash Green Money Text */
+        .gta-cash {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 800;
+            color: #27AE60;
+            -webkit-text-stroke: 1.2px #000000;
+            paint-order: stroke fill;
+            text-shadow: 2px 2px 0px #000000;
+        }
+
+        /* Comic Book Panel Borders & Hard Offset Drop Shadows */
+        .gta-panel {
+            border: 4px solid #000000;
+            box-shadow: 6px 6px 0px #000000;
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .gta-panel-hover:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 8px 8px 0px #000000;
+        }
+
+        .gta-btn {
+            border: 4px solid #000000;
+            box-shadow: 6px 6px 0px #000000;
+            transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.15s ease;
+        }
+
+        .gta-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 8px 8px 0px #000000;
+        }
+
+        .gta-btn:active {
+            transform: translate(3px, 3px);
+            box-shadow: 2px 2px 0px #000000;
+        }
+
+        /* Diagonal Halftone Comic Texture */
+        .halftone-bg {
+            background-image: radial-gradient(rgba(0, 0, 0, 0.3) 1.5px, transparent 1.5px);
+            background-size: 8px 8px;
+        }
+
+        /* Wanted Level Star Animations (Gold to Red Police Heat) */
+        .wanted-star {
+            transition: transform 0.2s ease, color 0.2s ease, filter 0.2s ease;
+        }
+        .wanted-star.active-gold {
+            color: #F59E0B;
+            filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.85)) drop-shadow(2px 2px 0px #000);
+            transform: scale(1.1);
+        }
+        .wanted-star.active-red {
+            color: #EF4444;
+            filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.95)) drop-shadow(2px 2px 0px #000);
+            transform: scale(1.15);
+        }
+        .wanted-star.inactive {
+            color: rgba(248, 250, 252, 0.22);
+            filter: drop-shadow(1px 1px 0px #000);
+        }
+
+        @keyframes wanted-flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .wanted-flash {
+            animation: wanted-flash 0.55s ease-in-out 2;
+        }
+
+        /* Radar Waypoint Pulse */
+        @keyframes radar-ping {
+            0% { transform: scale(0.75); opacity: 0.95; }
+            100% { transform: scale(2.4); opacity: 0; }
+        }
+        .radar-ping {
+            transform-origin: center;
+            animation: radar-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+
+        /* Mission Passed & Modal Pop Animation */
+        @keyframes comic-pop {
+            0% { transform: scale(0.88); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .comic-pop-anim {
+            animation: comic-pop 0.22s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+        }
+    </style>
+</head>
+<body class="bg-asphalt text-crispWhite antialiased selection:bg-vicePink selection:text-white">
+
+    <!-- =================================================================== -->
+    <!-- 1. STICKY GTA TOP BAR & INTERACTIVE TOP-RIGHT HUD                   -->
+    <!-- =================================================================== -->
+    <header class="sticky top-0 z-40 bg-asphalt/95 backdrop-blur-md border-b-4 border-black shadow-[0_4px_0_#000]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20 gap-3">
+
+                <!-- Left: GTA Box-Art Logo Badge & Navigation Links -->
+                <div class="flex items-center gap-6">
+                    <a href="#hero" class="flex items-center gap-3 group shrink-0">
+                        <div class="bg-crispWhite border-4 border-black px-2.5 py-1 shadow-[4px_4px_0_#EC4899] group-hover:shadow-[4px_4px_0_#38BDF8] transition">
+                            <div class="font-anton text-black text-base sm:text-lg leading-none tracking-tight">
+                                GRAND THEFT
+                            </div>
+                            <div class="bg-black text-viceAmber font-bebas text-xs sm:text-sm tracking-[0.22em] text-center leading-tight mt-0.5 px-1">
+                                GAMING
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Desktop Navigation Links -->
+                    <nav class="hidden xl:flex items-center gap-5 font-bebas text-xl tracking-wider">
+                        <a href="#zones" class="text-crispWhite hover:text-viceAmber transition">ZONES</a>
+                        <a href="#passes" class="text-crispWhite hover:text-gtaGreen transition">PASSES</a>
+                        <a href="#fuel-menu" class="text-crispWhite hover:text-vicePink transition">FUEL MENU</a>
+                        <a href="#missions" class="text-crispWhite hover:text-policeBlue transition">MISSIONS</a>
+                        <a href="#events" class="text-crispWhite hover:text-viceAmber transition">EVENTS</a>
+                        <a href="#safehouse" class="text-crispWhite hover:text-gtaGreen transition">SAFEHOUSE</a>
+                    </nav>
+                </div>
+
+                <!-- Right: Authentic GTA HUD Block + Book on WhatsApp CTA -->
+                <div class="flex items-center gap-2.5 sm:gap-3.5">
+
+                    <!-- GTA HUD Widget: Clock, ₹80/HR Cash Rate, 5-Star Wanted Level -->
+                    <div class="bg-panelDark border-4 border-black px-2.5 sm:px-3.5 py-1.5 shadow-[4px_4px_0_#000] flex items-center gap-2.5 sm:gap-3.5">
+                        <!-- Digital Clock & Starting Rate -->
+                        <div class="text-right leading-none border-r-2 border-black pr-2.5 sm:pr-3">
+                            <div id="gta-hud-clock" class="font-barlow font-extrabold text-xs sm:text-sm text-crispWhite tracking-wider">
+                                19:39
+                            </div>
+                            <div class="gta-cash text-sm sm:text-base leading-none mt-0.5">
+                                ₹80 / HR
+                            </div>
+                        </div>
+
+                        <!-- Interactive 5-Star Wanted Level -->
+                        <div class="flex flex-col items-end">
+                            <div id="wanted-stars-container" class="flex items-center gap-0.5 text-sm sm:text-lg select-none" title="Wanted Level rises as you explore higher-tier zones!">
+                                <span class="wanted-star active-gold" data-star="1">★</span>
+                                <span class="wanted-star inactive" data-star="2">★</span>
+                                <span class="wanted-star inactive" data-star="3">★</span>
+                                <span class="wanted-star inactive" data-star="4">★</span>
+                                <span class="wanted-star inactive" data-star="5">★</span>
+                            </div>
+                            <span id="wanted-label" class="font-barlow font-bold text-[10px] tracking-widest uppercase text-viceAmber leading-none mt-0.5">
+                                WANTED LVL 1
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Primary WhatsApp Booking Button -->
+                    <button type="button" onclick="openWhatsAppModal()" class="hidden sm:inline-flex items-center gap-2 bg-gtaGreen hover:bg-viceAmber text-black font-bebas text-lg lg:text-xl tracking-wider px-4 py-2 gta-btn shrink-0">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/>
+                        </svg>
+                        <span>BOOK ON WHATSAPP</span>
+                    </button>
+
+                    <!-- Mobile Menu Toggle -->
+                    <button id="mobile-menu-btn" type="button" aria-label="Toggle Menu" class="xl:hidden bg-vicePink text-white p-2 gta-btn">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Drawer -->
+        <div id="mobile-menu" class="hidden xl:hidden bg-panelDark border-t-4 border-black px-6 py-4 space-y-2.5">
+            <a href="#zones" class="mobile-link block font-bebas text-2xl tracking-wider text-crispWhite hover:text-viceAmber">ZONES &amp; RIGS</a>
+            <a href="#passes" class="mobile-link block font-bebas text-2xl tracking-wider text-gtaGreen hover:text-crispWhite">GRINDER COMBO PASSES</a>
+            <a href="#fuel-menu" class="mobile-link block font-bebas text-2xl tracking-wider text-vicePink hover:text-crispWhite">CLUCKIN' FUEL MENU</a>
+            <a href="#missions" class="mobile-link block font-bebas text-2xl tracking-wider text-policeBlue hover:text-crispWhite">ACTIVE MISSIONS (GAMES)</a>
+            <a href="#events" class="mobile-link block font-bebas text-2xl tracking-wider text-viceAmber hover:text-crispWhite">HEIST EVENTS</a>
+            <a href="#safehouse" class="mobile-link block font-bebas text-2xl tracking-wider text-gtaGreen hover:text-crispWhite">SAFEHOUSE &amp; GPS MAP</a>
+            <button type="button" onclick="openWhatsAppModal()" class="w-full mt-2 bg-gtaGreen text-black font-bebas text-2xl tracking-wider py-2.5 gta-btn">
+                BOOK RIG ON WHATSAPP
+            </button>
+        </div>
+    </header>
+
+    <!-- =================================================================== -->
+    <!-- 2. HERO BOX-ART COMIC COLLAGE                                       -->
+    <!-- =================================================================== -->
+    <section id="hero" class="relative py-12 sm:py-16 lg:py-20 border-b-4 border-black overflow-hidden">
+        <!-- Vice Sunset Ambient Glow -->
+        <div class="pointer-events-none absolute inset-0 bg-gradient-to-br from-vicePink/15 via-transparent to-policeBlue/15"></div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+
+                <!-- Left Column: Handwritten Tag, Anton Headline, Hype Copy, CTAs & 3-Stat Comic Strip -->
+                <div class="lg:col-span-6 space-y-6">
+                    <!-- Handwritten Permanent Marker Tag -->
+                    <div class="inline-block -rotate-2 bg-viceAmber text-black font-marker text-sm sm:text-base px-4 py-1.5 gta-panel">
+                        WELCOME TO THE ULTIMATE SAFEHOUSE
+                    </div>
+
+                    <!-- Massive Anton Headline -->
+                    <h1 class="gta-title text-5xl sm:text-6xl lg:text-7xl text-crispWhite leading-[0.98]">
+                        LEVEL UP YOUR <span class="text-vicePink">GRIND</span> IN <span class="text-policeBlue">VICE STYLE</span>
+                    </h1>
+
+                    <p class="text-gray-300 text-base sm:text-lg leading-relaxed max-w-xl">
+                        Step off the streets into <strong class="text-white">Los Santos &amp; Vice City Gaming Lounge</strong>—built for high-stakes ranked clutches, private 5v5 squad bootcamps, 4K PS5 Pro rivalries, and late-night Cluckin' Fuel snacks. Lock your rig instantly on WhatsApp or walk in anytime.
+                    </p>
+
+                    <!-- Two Bold Comic Action Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4 pt-1">
+                        <button type="button" onclick="openWhatsAppModal()" class="gta-btn bg-gtaGreen hover:bg-viceAmber text-black font-bebas text-2xl tracking-wider px-7 py-3.5 text-center flex items-center justify-center gap-2.5">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/>
+                            </svg>
+                            <span>BOOK RIG ON WHATSAPP</span>
+                        </button>
+                        <a href="#zones" class="gta-btn bg-vicePink hover:bg-policeBlue text-white hover:text-black font-bebas text-2xl tracking-wider px-7 py-3.5 text-center">
+                            EXPLORE ZONES &amp; RATES
+                        </a>
+                    </div>
+
+                    <!-- 3-Stat Comic Strip -->
+                    <div class="grid grid-cols-3 gap-3 pt-2">
+                        <div class="gta-panel bg-panelDark p-3 text-center">
+                            <div class="font-bebas text-lg sm:text-xl text-viceAmber tracking-wider leading-tight">
+                                RTX 4080 SUPER RIGS
+                            </div>
+                        </div>
+                        <div class="gta-panel bg-panelDark p-3 text-center">
+                            <div class="font-bebas text-lg sm:text-xl text-policeBlue tracking-wider leading-tight">
+                                1 GBPS FIBER PING
+                            </div>
+                        </div>
+                        <div class="gta-panel bg-panelDark p-3 text-center">
+                            <div class="font-bebas text-lg sm:text-xl text-gtaGreen tracking-wider leading-tight">
+                                OPEN 10 AM – 2 AM
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Multi-Panel GTA Cover-Art Comic Grid -->
+                <div class="lg:col-span-6">
+                    <div class="relative bg-black p-1.5 border-4 border-black shadow-[10px_10px_0_#EC4899]">
+                        <div class="grid grid-cols-2 gap-1.5">
+
+                            <!-- PANEL 1: Vice City Sunset Palm Silhouettes & Sports Car Silhouette -->
+                            <div class="relative h-48 sm:h-56 overflow-hidden bg-gradient-to-b from-[#EC4899] via-[#F59E0B] to-[#1E1B4B] halftone-bg">
+                                <svg viewBox="0 0 300 220" class="w-full h-full object-cover" preserveAspectRatio="xMidYMid slice">
+                                    <!-- Retro Sunset Sun -->
+                                    <circle cx="215" cy="82" r="46" fill="#FDE047" />
+                                    <rect x="160" y="90" width="110" height="4" fill="#EC4899" />
+                                    <rect x="160" y="100" width="110" height="5" fill="#EC4899" />
+                                    <rect x="160" y="112" width="110" height="6" fill="#EC4899" />
+                                    <!-- Palm Silhouettes -->
+                                    <path d="M52,176 Q64,108 40,58" stroke="#0B0C10" stroke-width="7" fill="none"/>
+                                    <path d="M40,58 Q14,46 4,70 M40,58 Q18,30 0,40 M40,58 Q66,30 86,50 M40,58 Q70,52 84,76" stroke="#0B0C10" stroke-width="5" fill="none" stroke-linecap="round"/>
+                                    <path d="M266,176 Q256,118 274,76" stroke="#0B0C10" stroke-width="6" fill="none"/>
+                                    <path d="M274,76 Q246,60 232,78 M274,76 Q290,54 302,70" stroke="#0B0C10" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+                                    <!-- Asphalt Highway -->
+                                    <polygon points="0,168 300,158 300,220 0,220" fill="#0B0C10" />
+                                    <!-- Sports Car Silhouette -->
+                                    <path d="M48,176 L85,152 L165,148 L218,162 L246,174 L242,188 L45,190 Z" fill="#14161D" stroke="#38BDF8" stroke-width="2.5"/>
+                                    <polygon points="94,154 158,151 182,163 86,165" fill="#38BDF8" opacity="0.85"/>
+                                    <circle cx="88" cy="188" r="16" fill="#0B0C10" stroke="#EC4899" stroke-width="4"/>
+                                    <circle cx="204" cy="186" r="16" fill="#0B0C10" stroke="#EC4899" stroke-width="4"/>
+                                </svg>
+                                <span class="absolute top-2 left-2 bg-black text-viceAmber font-bebas text-xs px-2 py-0.5 tracking-wider">
+                                    VICE SUNSET
+                                </span>
+                            </div>
+
+                            <!-- PANEL 2: RGB Esports Gaming Setup -->
+                            <div class="relative h-48 sm:h-56 overflow-hidden bg-gradient-to-br from-[#38BDF8] via-[#0F172A] to-[#0B0C10] halftone-bg">
+                                <svg viewBox="0 0 300 220" class="w-full h-full object-cover" preserveAspectRatio="xMidYMid slice">
+                                    <rect x="0" y="172" width="300" height="48" fill="#0B0C10" stroke="#000" stroke-width="3"/>
+                                    <!-- 360Hz Esports Monitor -->
+                                    <rect x="42" y="46" width="142" height="88" rx="4" fill="#14161D" stroke="#000" stroke-width="5"/>
+                                    <rect x="50" y="54" width="126" height="72" fill="#38BDF8" opacity="0.25"/>
+                                    <circle cx="113" cy="90" r="16" stroke="#EC4899" stroke-width="3" fill="none"/>
+                                    <line x1="113" y1="66" x2="113" y2="114" stroke="#EC4899" stroke-width="2.5"/>
+                                    <line x1="89" y1="90" x2="137" y2="90" stroke="#EC4899" stroke-width="2.5"/>
+                                    <polygon points="103,134 123,134 132,172 94,172" fill="#000"/>
+                                    <!-- RGB PC Tower -->
+                                    <rect x="202" y="40" width="68" height="132" fill="#14161D" stroke="#000" stroke-width="5"/>
+                                    <circle cx="236" cy="74" r="14" stroke="#EC4899" stroke-width="4" fill="none"/>
+                                    <circle cx="236" cy="110" r="14" stroke="#38BDF8" stroke-width="4" fill="none"/>
+                                    <circle cx="236" cy="146" r="14" stroke="#27AE60" stroke-width="4" fill="none"/>
+                                    <!-- Mechanical Keyboard -->
+                                    <polygon points="48,162 162,162 170,174 40,174" fill="#EC4899" stroke="#000" stroke-width="3"/>
+                                </svg>
+                                <span class="absolute top-2 right-2 bg-black text-policeBlue font-bebas text-xs px-2 py-0.5 tracking-wider">
+                                    360HZ ESPORTS RIGS
+                                </span>
+                            </div>
+
+                            <!-- PANEL 3: Pro Controller & PS5 Lounge -->
+                            <div class="relative h-48 sm:h-56 overflow-hidden bg-gradient-to-tr from-[#14161D] via-[#4C1D95] to-[#EC4899] halftone-bg">
+                                <svg viewBox="0 0 300 220" class="w-full h-full object-cover" preserveAspectRatio="xMidYMid slice">
+                                    <circle cx="150" cy="110" r="74" stroke="#F59E0B" stroke-width="5" fill="none" opacity="0.65"/>
+                                    <!-- Pro Gamepad -->
+                                    <path d="M78,132 C68,132 58,158 66,174 C74,188 92,176 106,154 L194,154 C208,176 226,188 234,174 C242,158 232,132 222,132 L206,96 C200,84 186,82 172,88 L128,88 C114,82 100,84 94,96 Z" fill="#F8FAFC" stroke="#000000" stroke-width="5"/>
+                                    <polygon points="116,90 184,90 176,122 124,122" fill="#14161D" stroke="#38BDF8" stroke-width="2.5"/>
+                                    <circle cx="122" cy="136" r="11" fill="#0B0C10" stroke="#EC4899" stroke-width="3"/>
+                                    <circle cx="178" cy="136" r="11" fill="#0B0C10" stroke="#EC4899" stroke-width="3"/>
+                                    <rect x="92" y="106" width="18" height="6" fill="#0B0C10"/>
+                                    <rect x="98" y="100" width="6" height="18" fill="#0B0C10"/>
+                                    <circle cx="198" cy="102" r="4" fill="#27AE60"/>
+                                    <circle cx="208" cy="110" r="4" fill="#EC4899"/>
+                                    <circle cx="198" cy="118" r="4" fill="#38BDF8"/>
+                                    <circle cx="188" cy="110" r="4" fill="#F59E0B"/>
+                                </svg>
+                                <span class="absolute bottom-2 left-2 bg-black text-vicePink font-bebas text-xs px-2 py-0.5 tracking-wider">
+                                    PS5 PRO PODS
+                                </span>
+                            </div>
+
+                            <!-- PANEL 4: Neon Cash & 5-Star Wanted Badge -->
+                            <div class="relative h-48 sm:h-56 overflow-hidden bg-gradient-to-tl from-[#27AE60] via-[#0B0C10] to-[#F59E0B] halftone-bg">
+                                <svg viewBox="0 0 300 220" class="w-full h-full object-cover" preserveAspectRatio="xMidYMid slice">
+                                    <!-- Cash Stack Vector -->
+                                    <rect x="58" y="88" width="184" height="84" rx="6" fill="#27AE60" stroke="#000000" stroke-width="5" transform="rotate(-4 150 130)"/>
+                                    <rect x="72" y="100" width="156" height="60" fill="none" stroke="#0B0C10" stroke-width="3" stroke-dasharray="8,4" transform="rotate(-4 150 130)"/>
+                                    <text x="150" y="142" text-anchor="middle" fill="#0B0C10" font-family="Anton, sans-serif" font-size="38" transform="rotate(-4 150 130)">₹80/HR</text>
+                                    <!-- 5 Wanted Stars Strip -->
+                                    <text x="150" y="54" text-anchor="middle" fill="#F59E0B" stroke="#000000" stroke-width="2" paint-order="stroke fill" font-family="sans-serif" font-size="26" letter-spacing="4">★★★★★</text>
+                                </svg>
+                                <span class="absolute bottom-2 right-2 bg-black text-gtaGreen font-bebas text-xs px-2 py-0.5 tracking-wider">
+                                    STREET RATES
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <!-- Centered GTA Emblem Overlay -->
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-crispWhite border-4 border-black px-4 py-2 shadow-[6px_6px_0_#000] text-center pointer-events-none z-10">
+                            <div class="font-anton text-black text-xl sm:text-2xl leading-none tracking-tight">
+                                GRAND THEFT
+                            </div>
+                            <div class="bg-black text-viceAmber font-bebas text-sm sm:text-base tracking-[0.25em] px-2 mt-0.5">
+                                GAMING // INDIA
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- 3. GAMING ZONES & INDIAN RUPEE (₹) PRICING                          -->
+    <!-- =================================================================== -->
+    <section id="zones" class="py-16 sm:py-24 border-b-4 border-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Section Header + Category Filter Pills -->
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
+                <div>
+                    <div class="font-marker text-vicePink text-base sm:text-lg mb-1">
+                        // Choose Your Loadout &amp; Reserve via WhatsApp
+                    </div>
+                    <h2 class="gta-title text-4xl sm:text-5xl text-crispWhite">
+                        GAMING ZONES &amp; <span class="text-viceAmber">RATES (₹)</span>
+                    </h2>
+                </div>
+
+                <!-- Category Filter Pills -->
+                <div class="flex flex-wrap gap-2.5" id="zone-filters">
+                    <button type="button" data-filter="all" class="zone-filter-btn gta-btn bg-viceAmber text-black font-bebas text-lg tracking-wider px-4 py-2">
+                        ALL ZONES
+                    </button>
+                    <button type="button" data-filter="pc" class="zone-filter-btn gta-btn bg-panelDark text-crispWhite hover:bg-vicePink font-bebas text-lg tracking-wider px-4 py-2">
+                        PC ARENA
+                    </button>
+                    <button type="button" data-filter="vip" class="zone-filter-btn gta-btn bg-panelDark text-crispWhite hover:bg-vicePink font-bebas text-lg tracking-wider px-4 py-2">
+                        VIP BOOTCAMP
+                    </button>
+                    <button type="button" data-filter="console-sim" class="zone-filter-btn gta-btn bg-panelDark text-crispWhite hover:bg-vicePink font-bebas text-lg tracking-wider px-4 py-2">
+                        CONSOLE &amp; SIM
+                    </button>
+                </div>
+            </div>
+
+            <!-- 4 GTA-Themed Zone Cards -->
+            <div id="zones-grid" class="grid grid-cols-1 md:grid-cols-2 gap-7">
+
+                <!-- ZONE 1: GROVE STREET STANDARD PC (₹80 / HR, ★★☆☆☆ Wanted) -->
+                <article data-category="pc" data-stars="2" class="zone-card gta-panel gta-panel-hover bg-panelDark flex flex-col justify-between overflow-hidden">
+                    <div>
+                        <div class="bg-gtaGreen border-b-4 border-black px-5 py-3 flex items-center justify-between">
+                            <span class="font-bebas text-black text-xl tracking-wider">★★☆☆☆ WANTED LEVEL</span>
+                            <span class="bg-black text-crispWhite font-barlow font-bold text-xs px-2.5 py-1 tracking-widest uppercase">
+                                STREET TIER
+                            </span>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex flex-wrap items-baseline justify-between gap-2 mb-3">
+                                <h3 class="gta-title-sm text-3xl text-crispWhite">GROVE STREET STANDARD PC</h3>
+                                <div class="gta-cash text-3xl">₹80 <span class="text-lg text-gray-300 font-barlow">/ HR</span></div>
+                            </div>
+                            <p class="text-gray-300 text-sm mb-5">
+                                High-FPS competitive 240Hz stations built for smooth daily Valorant, CS2, and GTA Online ranked grinds.
+                            </p>
+                            <div class="grid grid-cols-2 gap-2.5 text-xs font-barlow font-bold uppercase tracking-wider">
+                                <div class="bg-asphalt border-2 border-black p-2.5">
+                                    <span class="text-gray-400 block">PROCESSOR</span>
+                                    <span class="text-crispWhite text-sm">Intel i5-13400F</span>
+                                </div>
+                                <div class="bg-asphalt border-2 border-black p-2.5">
+                                    <span class="text-gray-400 block">GRAPHICS</span>
+                                    <span class="text-gtaGreen text-sm">RTX 4060 8GB</span>
+                                </div>
+                                <div class="bg-asphalt border-2 border-black p-2.5">
+                                    <span class="text-gray-400 block">DISPLAY</span>
+                                    <span class="text-crispWhite text-sm">240Hz 1080p Monitor</span>
+                                </div>
+                                <div class="bg-asphalt border-2 border-black p-2.5">
+                                    <span class="text-gray-400 block">PERIPHERALS</span>
+                                    <span class="text-crispWhite text-sm">Mech Keyboard &amp; HyperX</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button type="button" onclick="openWhatsAppModal('Grove Street Standard PC (₹80/hr)')" class="w-full gta-btn bg-gtaGreen hover:bg-viceAmber text-black font-bebas text-xl tracking-wider py-3">
+                            BOOK THIS RIG ON WHATSAPP
+                        </button>
+                    </div>
+                </article>
+
+                <!-- ZONE 2: VICE CITY PRO ARENA (₹120 / HR, ★★★☆☆ Wanted) -->
+                <article data-category="pc" data-stars="3" class="zone-card gta-panel gta-panel-hover bg-panelDark flex flex-col justify-between overflow-hidden">
+                    <div>
+                        <div class="bg-policeBlue border-b-4 border-black px-5 py-3 flex items-center justify-between">
+                            <span class="font-bebas text-black text-xl tracking-wider">★★★☆☆ WANTED LEVEL</span>
+                            <span class="bg-black text-policeBlue font-barlow font-bold text-xs px-2.5 py-1 tracking-widest uppercase">
+                                PRO ESPORTS
+                            </span>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex flex-wrap items-baseline justify-between gap-2 mb-3">
+                                <h3 class="gta-title-sm text-3xl text-crispWhite">VICE CITY PRO ARENA</h3>
+                                <div class="gta-cash text-3xl">₹120 <span class="text-lg text-gray-300 font-barlow">/ HR</span></div>
+                            </div>
+                            <p class="text-gray-300 text-sm mb-5">
+                                Tournament-grade 360Hz esports arena powered by AMD's X3D processor and flagship featherweight pro mice.
+                            </p>
+                            <div class="grid grid-cols-2 gap-2.5 text-xs font-barlow font-bold uppercase tracking-wider">
+                                <div class="bg-asphalt border-2 border-black p-2.5">
+                                    <span class="text-gray-400 block">PROCESSOR</span>
+                                    <span class="text-crispWhite text-sm">Ryzen 7 7800X3D</span>
+                                </div>
+                                <div class="bg-asphalt border-2 border-black p-2.5">
+                                    <span class="text-gray-400 block">GRAPHICS</span>
+                                    <span class="text-policeBlue text-sm">RTX 4070 Super</span>
+                                </div>
+                                <div class="bg-asphalt border-2 border-black p-2.5">
+                                    <span class="text-gray-400 block">DISPLAY</span>
+                                    <span class="text-crispWhite text-sm">360Hz Esports Monitor</span>
+                                </div>
+                                <div class="bg-asphalt border-2 border-black p-2.5">
+                                    <span class="text-gray-400 block">MOUSE</span>
+                                    <span class="text-crispWhite text-sm">Logitech G Pro X Superlight</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button type="button" onclick="openWhatsAppModal('Vice City Pro Arena (₹120/hr)')" class="w-full gta-btn bg-policeBlue hover:bg-viceAmber text-black font-bebas text-xl tracking-wider py-3">
+                            BOOK THIS RIG ON WHATSAPP
+                        </button>
+                    </div>
+                </article>
+
+                <!-- ZONE 3: VINEWOOD VIP BOOTCAMP (₹180 / HR, ★★★★★ Wanted) -->
+                <article data-category="vip" data-stars="5" class="zone-card gta-panel gta-panel-hover bg-panelDark flex flex-col justify-between overflow-hidden">
+                    <div>
+                        <div class="bg-vicePink border-b-4 border-black px-5 py-3 flex items-center justify-between">
+                            <span class="font-bebas text-white text-xl tracking-wider">★★★★★ MAX WANTED LEVEL</span>
+                            <span class="bg-black text-vicePink font-barlow font-bold text-xs px-2.5 py-1 tracking-widest uppercase">
+                                5-PC VIP SUITE
+                            </span>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex flex-wrap items-baseline justify-between gap-2 mb-3">
+                                <h3 class="gta-title-sm text-3xl text-crispWhite">VINEWOOD VIP BOOTCAMP</h3>
+                                <div class="gta-cash text-3xl">₹180 <span class="text-lg text-gray-300 font-barlow">/ HR</span></div>
+                            </div>
+                            <p class="text-gray-300 text-sm mb-5">
+                                Private 5-PC soundproof squad room with dedicated AC, mini-fridge, and max-spec 360Hz 2K OLED monsters.
+                            </p>
+                            <div class="grid grid-cols-2 gap-2.5 text-xs font-barlow font-bold uppercase tracking-wider">
+                                <div class="bg-asphalt border-2 border-black p-2.5">
+                                    <span class="text-gray-400 block">PROCESSOR &amp; GPU</span>
+                                    <span class="text-vicePink text-sm">i9-14900K + RTX 4080 Super</span>
+                                </div>
+                                <div class="bg-asphalt border-2 border-black p-2.5">
+                                    <span class="text-gray-400 block">DISPLAY</span>
+                                    <span class="text-crispWhite text-sm">360Hz 2K OLED</span>
+                                </div>
+                                <div class="bg-asphalt border-2 border-black p-2.5">
+                                    <span class="text-gray-400 block">ROOM SETUP</span>
+                                    <span class="text-crispWhite text-sm">5-PC Soundproof Squad</span>
+                                </div>
+                                <div class="bg-asphalt border-2 border-black p-2.5">
+                                    <span class="text-gray-400 block">VIP PERKS</span>
+                                    <span class="text-crispWhite text-sm">Private AC &amp; Mini-Fridge</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button type="button" onclick="openWhatsAppModal('Vinewood VIP Bootcamp (₹180/hr)')" class="w-full gta-btn bg-vicePink hover:bg-viceAmber text-white hover:text-black font-bebas text-xl tracking-wider py-3">
+                            BOOK THIS RIG ON WHATSAPP
+                        </button>
+                    </div>
+                </article>
+
+                <!-- ZONE 4: HEIST CONSOLE & SIM LOUNGE (₹150 / HR, ★★★★☆ Wanted) -->
+                <article data-category="console-sim" data-stars="4" class="zone-card gta-panel gta-panel-hover bg-panelDark flex flex-col justify-between overflow-hidden">
+                    <div>
+                        <div class="bg-viceAmber border-b-4 border-black px-5 py-3 flex items-center justify-between">
+                            <span class="font-bebas text-black text-xl tracking-wider">★★★★☆ WANTED LEVEL</span>
+                            <span class="bg-black text-viceAmber font-barlow font-bold text-xs px-2.5 py-1 tracking-widest uppercase">
+                                4K OLED &amp; SIM
+                            </span>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex flex-wrap items-baseline justify-between gap-2 mb-3">
+                                <h3 class="gta-title-sm text-3xl text-crispWhite">HEIST CONSOLE &amp; SIM LOUNGE</h3>
+                                <div class="gta-cash text-3xl">₹150 <span class="text-lg text-gray-300 font-barlow">/ HR</span></div>
+                            </div>
+                            <p class="text-gray-300 text-sm mb-5">
+                                Plush 4K 120Hz OLED couch pods for PS5 Pro squad showdowns or full force-feedback G923 racing cockpits.
+                            </p>
+                            <div class="grid grid-cols-2 gap-2.5 text-xs font-barlow font-bold uppercase tracking-wider">
+                                <div class="bg-asphalt border-2 border-black p-2.5">
+                                    <span class="text-gray-400 block">CONSOLE PODS</span>
+                                    <span class="text-crispWhite text-sm">PS5 Pro 4K 120Hz OLED</span>
+                                </div>
+                                <div class="bg-asphalt border-2 border-black p-2.5">
+                                    <span class="text-gray-400 block">SIM RACING</span>
+                                    <span class="text-viceAmber text-sm">Logitech G923 Cockpits</span>
+                                </div>
+                                <div class="bg-asphalt border-2 border-black p-2.5">
+                                    <span class="text-gray-400 block">SEATING</span>
+                                    <span class="text-crispWhite text-sm">Plush Leather Couch Pods</span>
+                                </div>
+                                <div class="bg-asphalt border-2 border-black p-2.5">
+                                    <span class="text-gray-400 block">CONTROLLERS</span>
+                                    <span class="text-crispWhite text-sm">DualSense Pro Wireless</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button type="button" onclick="openWhatsAppModal('Heist Console & Sim Lounge (₹150/hr)')" class="w-full gta-btn bg-viceAmber hover:bg-gtaGreen text-black font-bebas text-xl tracking-wider py-3">
+                            BOOK THIS RIG ON WHATSAPP
+                        </button>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- 4. GRINDER COMBO PASSES & CLUCKIN' FUEL CAFE MENU                   -->
+    <!-- =================================================================== -->
+    <section id="passes" class="py-16 sm:py-24 bg-panelDark/50 border-b-4 border-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Part A: Grinder Combo Passes -->
+            <div class="mb-20">
+                <div class="text-center max-w-2xl mx-auto mb-12">
+                    <div class="font-marker text-gtaGreen text-lg mb-1">
+                        // Bigger Sessions, Bigger Savings
+                    </div>
+                    <h2 class="gta-title text-4xl sm:text-5xl text-crispWhite">
+                        GRINDER <span class="text-gtaGreen">COMBO PASSES</span>
+                    </h2>
+                    <p class="text-gray-300 text-sm sm:text-base mt-2">
+                        Claim a multi-hour pass on WhatsApp to lock your session rate before you pull up.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-7">
+
+                    <!-- Pass 1: 3-HOUR STREET HUSTLE — ₹210 -->
+                    <div class="gta-panel gta-panel-hover bg-asphalt p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="inline-block bg-policeBlue text-black font-bebas text-sm px-3 py-0.5 tracking-wider mb-3">
+                                SAVE ₹30 INSTANTLY
+                            </div>
+                            <h3 class="gta-title-sm text-3xl text-crispWhite mb-2">3-HOUR STREET HUSTLE</h3>
+                            <div class="gta-cash text-5xl mb-4">₹210</div>
+                            <ul class="space-y-2.5 text-sm text-gray-300 border-t-2 border-gray-800 pt-4">
+                                <li class="flex items-center gap-2"><span class="text-gtaGreen font-bold">■</span> 3 Hours Continuous Playtime</li>
+                                <li class="flex items-center gap-2"><span class="text-gtaGreen font-bold">■</span> Valid on Standard &amp; Pro PCs</li>
+                                <li class="flex items-center gap-2"><span class="text-gtaGreen font-bold">■</span> 1 Gbps Fiber Low-Ping Routing</li>
+                            </ul>
+                        </div>
+                        <button type="button" onclick="openWhatsAppModal('3-Hour Street Hustle Pass (₹210)')" class="mt-6 w-full gta-btn bg-policeBlue hover:bg-gtaGreen text-black font-bebas text-xl tracking-wider py-3">
+                            CLAIM PASS ON WHATSAPP
+                        </button>
+                    </div>
+
+                    <!-- Pass 2: 5-HOUR HEIST PREP — ₹330 -->
+                    <div class="gta-panel gta-panel-hover bg-asphalt p-6 flex flex-col justify-between relative border-vicePink shadow-[8px_8px_0_#EC4899]">
+                        <div class="absolute -top-4 right-4 bg-vicePink text-white font-bebas text-base px-3 py-0.5 border-2 border-black tracking-wider">
+                            ★ MOST POPULAR
+                        </div>
+                        <div>
+                            <div class="inline-block bg-viceAmber text-black font-bebas text-sm px-3 py-0.5 tracking-wider mb-3">
+                                SAVE ₹70 + FREE SPRUNK
+                            </div>
+                            <h3 class="gta-title-sm text-3xl text-crispWhite mb-2">5-HOUR HEIST PREP</h3>
+                            <div class="gta-cash text-5xl mb-4">₹330</div>
+                            <ul class="space-y-2.5 text-sm text-gray-200 border-t-2 border-gray-800 pt-4">
+                                <li class="flex items-center gap-2"><span class="text-vicePink font-bold">■</span> 5 Hours Ranked / RP Grind</li>
+                                <li class="flex items-center gap-2"><span class="text-vicePink font-bold">■</span> Includes 1 Free Sprunk Mojito</li>
+                                <li class="flex items-center gap-2"><span class="text-vicePink font-bold">■</span> Valid on Standard &amp; Pro PCs</li>
+                            </ul>
+                        </div>
+                        <button type="button" onclick="openWhatsAppModal('5-Hour Heist Prep Pass (₹330)')" class="mt-6 w-full gta-btn bg-vicePink hover:bg-gtaGreen text-white hover:text-black font-bebas text-xl tracking-wider py-3">
+                            CLAIM PASS ON WHATSAPP
+                        </button>
+                    </div>
+
+                    <!-- Pass 3: ALL-NIGHT VICE MARATHON — ₹499 -->
+                    <div class="gta-panel gta-panel-hover bg-asphalt p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="inline-block bg-gtaGreen text-black font-bebas text-sm px-3 py-0.5 tracking-wider mb-3">
+                                10 PM – 6 AM NIGHT OWL
+                            </div>
+                            <h3 class="gta-title-sm text-3xl text-crispWhite mb-2">ALL-NIGHT VICE MARATHON</h3>
+                            <div class="gta-cash text-5xl mb-4">₹499</div>
+                            <ul class="space-y-2.5 text-sm text-gray-300 border-t-2 border-gray-800 pt-4">
+                                <li class="flex items-center gap-2"><span class="text-viceAmber font-bold">■</span> 8 Hours Non-Stop Overnight</li>
+                                <li class="flex items-center gap-2"><span class="text-viceAmber font-bold">■</span> Unlimited Masala Chai / Coffee</li>
+                                <li class="flex items-center gap-2"><span class="text-viceAmber font-bold">■</span> All PC Arenas Eligible</li>
+                            </ul>
+                        </div>
+                        <button type="button" onclick="openWhatsAppModal('All-Night Vice Marathon Pass (₹499)')" class="mt-6 w-full gta-btn bg-viceAmber hover:bg-gtaGreen text-black font-bebas text-xl tracking-wider py-3">
+                            CLAIM PASS ON WHATSAPP
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Part B: Cluckin' Fuel Cafe Menu -->
+            <div id="fuel-menu" class="scroll-mt-24">
+                <div class="gta-panel bg-asphalt p-6 sm:p-10 halftone-bg">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b-4 border-black pb-6 mb-8">
+                        <div>
+                            <div class="font-marker text-viceAmber text-base sm:text-lg">
+                                // Cluckin' Bell &amp; Burger Shot Parody Kitchen
+                            </div>
+                            <h2 class="gta-title text-4xl sm:text-5xl text-crispWhite">
+                                CLUCKIN' FUEL <span class="text-vicePink">CAFE MENU</span>
+                            </h2>
+                        </div>
+                        <div class="bg-vicePink text-white font-bebas text-xl px-4 py-2 border-4 border-black shadow-[4px_4px_0_#000] self-start md:self-auto">
+                            DELIVERED HOT TO YOUR RIG
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+                        <!-- Item 1 -->
+                        <div class="bg-panelDark border-4 border-black p-5 shadow-[4px_4px_0_#000] flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-start justify-between gap-2 mb-2">
+                                    <span class="bg-viceAmber text-black font-bebas text-xs px-2 py-0.5 tracking-wider">CLUCKIN' SPECIAL</span>
+                                    <span class="gta-cash text-2xl">₹99</span>
+                                </div>
+                                <h3 class="font-bebas text-2xl text-crispWhite tracking-wide">CLUCKIN' PERI-PERI FRIES</h3>
+                                <p class="text-gray-400 text-sm mt-1">
+                                    Crispy golden crinkle fries tossed in fiery peri-peri seasoning with creamy garlic mayo dip.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Item 2 -->
+                        <div class="bg-panelDark border-4 border-black p-5 shadow-[4px_4px_0_#000] flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-start justify-between gap-2 mb-2">
+                                    <span class="bg-vicePink text-white font-bebas text-xs px-2 py-0.5 tracking-wider">BURGER SHOT</span>
+                                    <span class="gta-cash text-2xl">₹149</span>
+                                </div>
+                                <h3 class="font-bebas text-2xl text-crispWhite tracking-wide">BURGER SHOT DOUBLE CHEESE GRILL</h3>
+                                <p class="text-gray-400 text-sm mt-1">
+                                    Stacked double-patty grilled burger loaded with melted cheddar, caramelized onions, and smoky sauce.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Item 3 -->
+                        <div class="bg-panelDark border-4 border-black p-5 shadow-[4px_4px_0_#000] flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-start justify-between gap-2 mb-2">
+                                    <span class="bg-policeBlue text-black font-bebas text-xs px-2 py-0.5 tracking-wider">DESI FAVORITE</span>
+                                    <span class="gta-cash text-2xl">₹79</span>
+                                </div>
+                                <h3 class="font-bebas text-2xl text-crispWhite tracking-wide">TREVOR'S SPICY MASALA MAGGI</h3>
+                                <p class="text-gray-400 text-sm mt-1">
+                                    Double-tadka street masala Maggi loaded with green chillies, sweet corn, and butter.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Item 4 -->
+                        <div class="bg-panelDark border-4 border-black p-5 shadow-[4px_4px_0_#000] flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-start justify-between gap-2 mb-2">
+                                    <span class="bg-gtaGreen text-black font-bebas text-xs px-2 py-0.5 tracking-wider">SPRUNK COOLER</span>
+                                    <span class="gta-cash text-2xl">₹89</span>
+                                </div>
+                                <h3 class="font-bebas text-2xl text-crispWhite tracking-wide">SPRUNK LIME MINT MOJITO</h3>
+                                <p class="text-gray-400 text-sm mt-1">
+                                    Ice-cold neon lime, crushed mint leaves, and fizzy soda kick to keep your aim crisp.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Item 5 -->
+                        <div class="bg-panelDark border-4 border-black p-5 shadow-[4px_4px_0_#000] flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-start justify-between gap-2 mb-2">
+                                    <span class="bg-viceAmber text-black font-bebas text-xs px-2 py-0.5 tracking-wider">ECOLA CAFFEINE</span>
+                                    <span class="gta-cash text-2xl">₹119</span>
+                                </div>
+                                <h3 class="font-bebas text-2xl text-crispWhite tracking-wide">ECOLA COLD COFFEE BOOST</h3>
+                                <p class="text-gray-400 text-sm mt-1">
+                                    Thick blended dark roast cold coffee with chocolate swirl for late-night overtime clutches.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Item 6 -->
+                        <div class="bg-panelDark border-4 border-black p-5 shadow-[4px_4px_0_#000] flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-start justify-between gap-2 mb-2">
+                                    <span class="bg-vicePink text-white font-bebas text-xs px-2 py-0.5 tracking-wider">SQUAD PLATTER</span>
+                                    <span class="gta-cash text-2xl">₹139</span>
+                                </div>
+                                <h3 class="font-bebas text-2xl text-crispWhite tracking-wide">VICE NACHOS OVERLOAD</h3>
+                                <p class="text-gray-400 text-sm mt-1">
+                                    Crunchy tortilla chips smothered in molten cheese sauce, jalapeños, salsa, and sour cream.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- 5. ACTIVE MISSIONS (GAME LIBRARY) & WEEKEND HEIST EVENTS            -->
+    <!-- =================================================================== -->
+    <section id="missions" class="py-16 sm:py-24 border-b-4 border-black">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Active Missions Header + Filter Pills -->
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
+                <div>
+                    <div class="font-marker text-policeBlue text-base sm:text-lg mb-1">
+                        // Pre-Installed &amp; Updated • Zero Wait Time
+                    </div>
+                    <h2 class="gta-title text-4xl sm:text-5xl text-crispWhite">
+                        ACTIVE <span class="text-policeBlue">MISSIONS</span>
+                    </h2>
+                </div>
+
+                <!-- Genre Filter Buttons -->
+                <div class="flex flex-wrap gap-2.5" id="game-filters">
+                    <button type="button" data-genre="all" class="game-filter-btn gta-btn bg-policeBlue text-black font-bebas text-lg tracking-wider px-4 py-2">
+                        ALL
+                    </button>
+                    <button type="button" data-genre="fps" class="game-filter-btn gta-btn bg-panelDark text-crispWhite hover:bg-policeBlue hover:text-black font-bebas text-lg tracking-wider px-4 py-2">
+                        FPS / TACTICAL
+                    </button>
+                    <button type="button" data-genre="open-world" class="game-filter-btn gta-btn bg-panelDark text-crispWhite hover:bg-policeBlue hover:text-black font-bebas text-lg tracking-wider px-4 py-2">
+                        OPEN WORLD / RP
+                    </button>
+                    <button type="button" data-genre="sports-racing" class="game-filter-btn gta-btn bg-panelDark text-crispWhite hover:bg-policeBlue hover:text-black font-bebas text-lg tracking-wider px-4 py-2">
+                        SPORTS &amp; RACING
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filterable Games Grid -->
+            <div id="games-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+                <!-- Populated dynamically via JS -->
+            </div>
+
+            <!-- Weekend Heist Events -->
+            <div id="events" class="scroll-mt-24">
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+                    <div>
+                        <div class="font-marker text-vicePink text-base sm:text-lg mb-1">
+                            // Weekend LAN Tournaments • Cash Prize Pools
+                        </div>
+                        <h2 class="gta-title text-4xl sm:text-5xl text-crispWhite">
+                            WEEKEND <span class="text-vicePink">HEIST EVENTS</span>
+                        </h2>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-7">
+
+                    <!-- Event 1: LOS SANTOS VALORANT 5V5 HEIST -->
+                    <div class="gta-panel gta-panel-hover bg-panelDark flex flex-col justify-between overflow-hidden">
+                        <div>
+                            <div class="bg-vicePink border-b-4 border-black px-5 py-3 flex items-center justify-between">
+                                <span class="font-bebas text-white text-xl tracking-wider">SATURDAY LAN • 4:00 PM</span>
+                                <span class="bg-black text-gtaGreen font-barlow font-extrabold text-base px-3 py-0.5">
+                                    ₹15,000 PRIZE POOL
+                                </span>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="gta-title-sm text-3xl text-crispWhite mb-2">LOS SANTOS VALORANT 5V5 HEIST</h3>
+                                <p class="text-gray-300 text-sm leading-relaxed mb-4">
+                                    High-intensity 5v5 LAN bracket hosted in our 360Hz Vice City Pro Arena &amp; Vinewood VIP Bootcamp rooms. Bring your full 5-stack to claim the city crown!
+                                </p>
+                                <div class="bg-asphalt border-2 border-black p-3 font-barlow text-xs uppercase tracking-wider space-y-1">
+                                    <div class="flex justify-between"><span class="text-gray-400">FORMAT:</span> <span class="text-crispWhite font-bold">5v5 Double-Elimination LAN</span></div>
+                                    <div class="flex justify-between"><span class="text-gray-400">SQUAD ENTRY:</span> <span class="text-viceAmber font-bold">₹500 / Team</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-0">
+                            <button type="button" onclick="registerTournamentWhatsApp('LOS SANTOS VALORANT 5V5 HEIST (₹15,000 Prize Pool)')" class="w-full gta-btn bg-vicePink hover:bg-gtaGreen text-white hover:text-black font-bebas text-xl tracking-wider py-3">
+                                REGISTER SQUAD ON WHATSAPP
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Event 2: VICE CITY FC 25 KNOCKOUT -->
+                    <div class="gta-panel gta-panel-hover bg-panelDark flex flex-col justify-between overflow-hidden">
+                        <div>
+                            <div class="bg-policeBlue border-b-4 border-black px-5 py-3 flex items-center justify-between">
+                                <span class="font-bebas text-black text-xl tracking-wider">SUNDAY LAN • 2:00 PM</span>
+                                <span class="bg-black text-gtaGreen font-barlow font-extrabold text-base px-3 py-0.5">
+                                    ₹5,000 PRIZE POOL
+                                </span>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="gta-title-sm text-3xl text-crispWhite mb-2">VICE CITY FC 25 KNOCKOUT</h3>
+                                <p class="text-gray-300 text-sm leading-relaxed mb-4">
+                                    1v1 sudden-death stadium showdowns on our 4K 120Hz OLED PS5 Pro couch pods. Extra time and penalties enabled—no second chances!
+                                </p>
+                                <div class="bg-asphalt border-2 border-black p-3 font-barlow text-xs uppercase tracking-wider space-y-1">
+                                    <div class="flex justify-between"><span class="text-gray-400">FORMAT:</span> <span class="text-crispWhite font-bold">1v1 Single Elimination PS5 Pro</span></div>
+                                    <div class="flex justify-between"><span class="text-gray-400">PLAYER ENTRY:</span> <span class="text-viceAmber font-bold">₹150 / Solo Player</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-0">
+                            <button type="button" onclick="registerTournamentWhatsApp('VICE CITY FC 25 KNOCKOUT (₹5,000 Prize Pool)')" class="w-full gta-btn bg-policeBlue hover:bg-gtaGreen text-black font-bebas text-xl tracking-wider py-3">
+                                REGISTER SQUAD ON WHATSAPP
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- 6. SAFEHOUSE LOCATION WITH CLICK-TO-OPEN REAL MAP IN SAME PANEL     -->
+    <!-- =================================================================== -->
+    <section id="safehouse" class="py-16 sm:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="mb-10">
+                <div class="font-marker text-viceAmber text-base sm:text-lg mb-1">
+                    // Pull Up to the Turf or Switch to Live GPS
+                </div>
+                <h2 class="gta-title text-4xl sm:text-5xl text-crispWhite">
+                    FIND THE <span class="text-viceAmber">SAFEHOUSE</span>
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+
+                <!-- Left Card: Safehouse Address, Hours, Copy Number & WhatsApp Chat -->
+                <div class="lg:col-span-5 flex">
+                    <div class="gta-panel bg-panelDark p-6 sm:p-8 flex flex-col justify-between w-full space-y-6">
+                        <div class="space-y-5">
+                            <div class="flex items-center justify-between gap-2 border-b-4 border-black pb-4">
+                                <div>
+                                    <span class="bg-gtaGreen text-black font-bebas text-sm px-2.5 py-0.5 tracking-wider">SAFEHOUSE ACTIVE</span>
+                                    <h3 id="safehouse-cafe-name" class="gta-title-sm text-3xl text-crispWhite mt-1">GRAND THEFT GAMING</h3>
+                                </div>
+                            </div>
+
+                            <!-- Address Block -->
+                            <div class="bg-asphalt border-4 border-black p-4">
+                                <div class="font-bebas text-sm text-vicePink tracking-wider mb-1">SAFEHOUSE ADDRESS</div>
+                                <p id="safehouse-address-text" class="text-crispWhite text-sm font-medium leading-relaxed">
+                                    2nd Floor, Vice Plaza, Station Road, Talegaon Dabhade, Pune, Maharashtra 410507
+                                </p>
+                            </div>
+
+                            <!-- Operating Hours & Phone Number -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
+                                <div class="bg-asphalt border-4 border-black p-4">
+                                    <div class="font-bebas text-sm text-viceAmber tracking-wider mb-1">OPERATING HOURS</div>
+                                    <div class="font-barlow font-extrabold text-xl text-crispWhite tracking-wider">
+                                        10:00 AM – 02:00 AM DAILY
+                                    </div>
+                                </div>
+
+                                <div class="bg-asphalt border-4 border-black p-4">
+                                    <div class="font-bebas text-sm text-policeBlue tracking-wider mb-1">DISPATCH HOTLINE</div>
+                                    <div id="safehouse-phone-text" class="font-barlow font-extrabold text-2xl text-crispWhite tracking-wider">
+                                        +91 98765 43210
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Copy Number & Direct WhatsApp Buttons -->
+                        <div class="space-y-3 pt-2">
+                            <button id="copy-phone-btn" type="button" class="w-full gta-btn bg-viceAmber hover:bg-crispWhite text-black font-bebas text-xl tracking-wider py-3">
+                                COPY NUMBER
+                            </button>
+                            <button type="button" onclick="openWhatsAppModal()" class="w-full gta-btn bg-gtaGreen hover:bg-policeBlue text-black font-bebas text-xl tracking-wider py-3 flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/>
+                                </svg>
+                                <span>CHAT / BOOK ON WHATSAPP</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Card: SAME MAP CONTAINER WITH CLICK-TO-OPEN REAL GOOGLE MAPS -->
+                <div class="lg:col-span-7 flex">
+                    <div id="safehouse-map-panel" class="gta-panel bg-panelDark relative w-full min-h-[390px] sm:min-h-[450px] overflow-hidden flex flex-col">
+
+                        <!-- VIEW 1 (DEFAULT): Stylized Dark-Green / Gold GTA Mini-Map Radar SVG -->
+                        <div id="gta-radar-view" role="button" tabindex="0" aria-label="Click map to open real GPS Google Map" class="relative w-full h-full flex-1 cursor-pointer group select-none bg-[#0A140F]">
+                            <svg viewBox="0 0 640 440" class="w-full h-full object-cover" preserveAspectRatio="xMidYMid slice">
+                                <!-- Dark Tactical Green Radar Terrain -->
+                                <rect width="640" height="440" fill="#0B1610"/>
+                                <!-- River / Lake Contour -->
+                                <path d="M0,0 L125,0 Q155,150 105,280 Q80,360 135,440 L0,440 Z" fill="#072227"/>
+                                <path d="M125,0 Q155,150 105,280 Q80,360 135,440" stroke="#27AE60" stroke-width="3" fill="none" opacity="0.7"/>
+
+                                <!-- City Block Grid -->
+                                <g stroke="#173324" stroke-width="14">
+                                    <line x1="115" y1="95" x2="640" y2="95"/>
+                                    <line x1="110" y1="205" x2="640" y2="205"/>
+                                    <line x1="105" y1="315" x2="640" y2="315"/>
+                                    <line x1="210" y1="0" x2="210" y2="440"/>
+                                    <line x1="345" y1="0" x2="345" y2="440"/>
+                                    <line x1="480" y1="0" x2="480" y2="440"/>
+                                    <line x1="585" y1="0" x2="585" y2="440"/>
+                                </g>
+
+                                <!-- Radar Concentric Rings -->
+                                <circle cx="345" cy="205" r="95" fill="none" stroke="#27AE60" stroke-width="1.5" stroke-dasharray="6,6" opacity="0.45"/>
+                                <circle cx="345" cy="205" r="175" fill="none" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="8,8" opacity="0.35"/>
+
+                                <!-- Main Gold Highway Diagonal -->
+                                <line x1="90" y1="415" x2="610" y2="30" stroke="#F59E0B" stroke-width="10"/>
+                                <line x1="90" y1="415" x2="610" y2="30" stroke="#000000" stroke-width="2" stroke-dasharray="8,8"/>
+
+                                <!-- GPS Waypoint Route -->
+                                <polyline points="210,385 210,205 345,205 345,155" fill="none" stroke="#EC4899" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+
+                                <!-- Highway Route Shield -->
+                                <rect x="145" y="280" width="46" height="26" rx="4" fill="#0B0C10" stroke="#F59E0B" stroke-width="2.5"/>
+                                <text x="168" y="297" text-anchor="middle" fill="#F59E0B" font-family="Barlow Condensed, sans-serif" font-weight="800" font-size="13">NH-48</text>
+
+                                <!-- Player Arrow Blip -->
+                                <polygon points="210,370 198,395 210,388 222,395" fill="#F8FAFC" stroke="#000000" stroke-width="2.5"/>
+
+                                <!-- Pulsing Target Waypoint Pin -->
+                                <circle cx="345" cy="155" r="24" fill="#F59E0B" opacity="0.45" class="radar-ping"/>
+                                <circle cx="345" cy="155" r="13" fill="#EC4899" stroke="#000000" stroke-width="3.5"/>
+                                <circle cx="345" cy="155" r="4.5" fill="#FDE047"/>
+
+                                <!-- Safehouse Tag on Radar -->
+                                <rect x="285" y="112" width="120" height="24" fill="#000000" stroke="#F59E0B" stroke-width="2"/>
+                                <text x="345" y="128" text-anchor="middle" fill="#F59E0B" font-family="Bebas Neue, sans-serif" font-size="15" letter-spacing="1.5">SAFEHOUSE HQ</text>
+                            </svg>
+
+                            <!-- Top-Left Radar HUD Status -->
+                            <div class="absolute top-3 left-3 bg-black/90 border-2 border-gtaGreen px-3 py-1 font-bebas text-sm text-gtaGreen tracking-widest">
+                                ● GTA RADAR // TALEGAON SECTOR
+                            </div>
+
+                            <!-- North Compass Badge -->
+                            <div class="absolute top-3 right-3 bg-black border-2 border-viceAmber w-8 h-8 flex items-center justify-center font-bebas text-viceAmber text-base">
+                                N
+                            </div>
+
+                            <!-- Center/Bottom Bold Interactive GTA HUD Overlay Badge -->
+                            <div class="absolute inset-x-0 bottom-5 flex justify-center px-4">
+                                <div class="gta-btn bg-viceAmber group-hover:bg-gtaGreen text-black font-bebas text-xl sm:text-2xl tracking-wider px-6 py-3 flex items-center gap-2.5">
+                                    <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                    <span>CLICK MAP TO OPEN REAL GPS MAP</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VIEW 2 (ON CLICK): Real Interactive Google Maps Iframe inside Same Panel -->
+                        <div id="real-gps-view" class="hidden w-full h-full flex-1 flex flex-col bg-asphalt">
+                            <!-- Top Control Bar inside Map Frame -->
+                            <div class="bg-asphalt border-b-4 border-black px-3 sm:px-4 py-2.5 flex flex-wrap items-center justify-between gap-2">
+                                <a id="open-gmaps-app-link" href="https://www.google.com/maps/search/?api=1&query=Talegaon+Dabhade+Pune+Maharashtra" target="_blank" rel="noopener noreferrer" class="bg-gtaGreen hover:bg-viceAmber text-black font-bebas text-base sm:text-lg tracking-wider px-3.5 py-1.5 border-2 border-black shadow-[3px_3px_0_#000] transition">
+                                    OPEN IN GOOGLE MAPS APP ↗
+                                </a>
+                                <button id="back-to-radar-btn" type="button" class="bg-panelDark hover:bg-vicePink text-crispWhite font-bebas text-base sm:text-lg tracking-wider px-3.5 py-1.5 border-2 border-black shadow-[3px_3px_0_#000] transition">
+                                    GTA RADAR VIEW
+                                </button>
+                            </div>
+
+                            <!-- Real Google Maps Embed Container -->
+                            <div class="relative flex-1 w-full min-h-[340px]">
+                                <iframe
+                                    id="real-gmaps-iframe"
+                                    title="Grand Theft Gaming Safehouse Google Map"
+                                    src=""
+                                    class="w-full h-full border-0 min-h-[340px]"
+                                    loading="lazy"
+                                    referrerpolicy="no-referrer-when-downgrade">
+                                </iframe>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- 7. FOOTER                                                           -->
+    <!-- =================================================================== -->
+    <footer class="bg-black border-t-4 border-black py-8 pb-24 sm:pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <span class="bg-crispWhite text-black font-anton text-sm px-2 py-0.5">GRAND THEFT GAMING</span>
+                <span class="font-bebas text-base text-gray-400 tracking-wider">LOS SANTOS &amp; VICE CITY GAMING LOUNGE</span>
+            </div>
+            <div class="font-barlow text-xs text-gray-500 uppercase tracking-widest">
+                © 2026 GRAND THEFT GAMING INDIA • ALL RATES IN INR (₹)
+            </div>
+        </div>
+    </footer>
+
+    <!-- =================================================================== -->
+    <!-- 8. FLOATING BOTTOM-RIGHT GTA WHATSAPP BOOKING BUTTON                -->
+    <!-- =================================================================== -->
+    <button type="button" onclick="openWhatsAppModal()" aria-label="Book on WhatsApp" class="fixed bottom-5 right-5 z-40 bg-gtaGreen hover:bg-viceAmber text-black font-bebas text-xl sm:text-2xl tracking-wider px-5 py-3 gta-btn flex items-center gap-2.5">
+        <svg class="w-6 h-6 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/>
+        </svg>
+        <span>WHATSAPP BOOKING</span>
+    </button>
+
+    <!-- =================================================================== -->
+    <!-- 9. GTA MISSION DISPATCH (WHATSAPP BOOKING) MODAL                    -->
+    <!-- =================================================================== -->
+    <div id="whatsapp-booking-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-xs overflow-y-auto p-4 flex items-center justify-center">
+        <div class="w-full max-w-lg bg-panelDark border-4 border-black shadow-[10px_10px_0_#27AE60] comic-pop-anim my-auto">
+
+            <!-- Modal Header -->
+            <div class="bg-gtaGreen border-b-4 border-black px-6 py-4 flex items-center justify-between">
+                <div>
+                    <div class="font-barlow font-extrabold text-xs uppercase tracking-widest text-black">
+                        // INSTANT CREW RESERVATION
+                    </div>
+                    <h3 class="gta-title-sm text-3xl text-black leading-none">
+                        GTA MISSION DISPATCH
+                    </h3>
+                </div>
+                <button type="button" id="close-wa-modal-btn" aria-label="Close Modal" class="bg-black text-crispWhite hover:bg-vicePink font-bebas text-xl px-3 py-1 border-2 border-black">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Booking Form -->
+            <form id="wa-booking-form" class="p-6 space-y-4">
+
+                <!-- Select Zone / Combo Pass -->
+                <div>
+                    <label for="wa-zone-select" class="block font-bebas text-lg tracking-wider text-viceAmber mb-1">
+                        SELECT ZONE OR COMBO PASS
+                    </label>
+                    <select id="wa-zone-select" class="w-full bg-asphalt text-crispWhite border-4 border-black px-3.5 py-2.5 font-inter text-sm font-semibold focus:outline-none focus:border-gtaGreen">
+                        <optgroup label="HOURLY GAMING ZONES">
+                            <option value="Grove Street Standard PC (₹80/hr)" data-rate="80" data-type="hourly">Grove Street Standard PC — ₹80 / hr</option>
+                            <option value="Vice City Pro Arena (₹120/hr)" data-rate="120" data-type="hourly">Vice City Pro Arena — ₹120 / hr</option>
+                            <option value="Vinewood VIP Bootcamp (₹180/hr)" data-rate="180" data-type="hourly">Vinewood VIP Bootcamp — ₹180 / hr</option>
+                            <option value="Heist Console & Sim Lounge (₹150/hr)" data-rate="150" data-type="hourly">Heist Console &amp; Sim Lounge — ₹150 / hr</option>
+                        </optgroup>
+                        <optgroup label="GRINDER COMBO PASSES">
+                            <option value="3-Hour Street Hustle Pass (₹210)" data-rate="210" data-type="pass" data-hours="3">3-Hour Street Hustle Pass — ₹210</option>
+                            <option value="5-Hour Heist Prep Pass (₹330)" data-rate="330" data-type="pass" data-hours="5">5-Hour Heist Prep Pass — ₹330</option>
+                            <option value="All-Night Vice Marathon Pass (₹499)" data-rate="499" data-type="pass" data-hours="8">All-Night Vice Marathon Pass — ₹499</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <!-- Row: Number of Rigs/Players & Duration -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="wa-rigs-select" class="block font-bebas text-lg tracking-wider text-policeBlue mb-1">
+                            RIGS / PLAYERS
+                        </label>
+                        <select id="wa-rigs-select" class="w-full bg-asphalt text-crispWhite border-4 border-black px-3.5 py-2.5 font-inter text-sm font-semibold focus:outline-none focus:border-gtaGreen">
+                            <option value="1">1 Rig / Solo</option>
+                            <option value="2">2 Rigs / Duo</option>
+                            <option value="3">3 Rigs / Trio</option>
+                            <option value="4">4 Rigs / Squad</option>
+                            <option value="5">5 Rigs / Full 5-Stack</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="wa-duration-select" class="block font-bebas text-lg tracking-wider text-policeBlue mb-1">
+                            DURATION (HRS)
+                        </label>
+                        <select id="wa-duration-select" class="w-full bg-asphalt text-crispWhite border-4 border-black px-3.5 py-2.5 font-inter text-sm font-semibold focus:outline-none focus:border-gtaGreen">
+                            <option value="1">1 Hour</option>
+                            <option value="2" selected>2 Hours</option>
+                            <option value="3">3 Hours</option>
+                            <option value="4">4 Hours</option>
+                            <option value="5">5 Hours</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Row: Date & Time Slot -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="wa-date-input" class="block font-bebas text-lg tracking-wider text-crispWhite mb-1">
+                            DATE
+                        </label>
+                        <input id="wa-date-input" type="date" required class="w-full bg-asphalt text-crispWhite border-4 border-black px-3.5 py-2 font-inter text-sm font-semibold focus:outline-none focus:border-gtaGreen">
+                    </div>
+
+                    <div>
+                        <label for="wa-time-select" class="block font-bebas text-lg tracking-wider text-crispWhite mb-1">
+                            TIME SLOT
+                        </label>
+                        <select id="wa-time-select" class="w-full bg-asphalt text-crispWhite border-4 border-black px-3.5 py-2.5 font-inter text-sm font-semibold focus:outline-none focus:border-gtaGreen">
+                            <option value="10:00 AM">10:00 AM</option>
+                            <option value="12:00 PM">12:00 PM</option>
+                            <option value="02:00 PM">02:00 PM</option>
+                            <option value="04:00 PM">04:00 PM</option>
+                            <option value="06:00 PM" selected>06:00 PM</option>
+                            <option value="08:00 PM">08:00 PM</option>
+                            <option value="10:00 PM">10:00 PM (Night Grind)</option>
+                            <option value="12:00 AM">12:00 AM (Late Night)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Gamertag Input -->
+                <div>
+                    <label for="wa-gamertag-input" class="block font-bebas text-lg tracking-wider text-vicePink mb-1">
+                        YOUR GAMERTAG / NAME
+                    </label>
+                    <input id="wa-gamertag-input" type="text" placeholder="e.g., GhostRider_IN" required class="w-full bg-asphalt text-crispWhite border-4 border-black px-3.5 py-2.5 font-inter text-sm font-semibold placeholder:text-gray-500 focus:outline-none focus:border-gtaGreen">
+                </div>
+
+                <!-- Live Estimated Total Box -->
+                <div class="bg-asphalt border-4 border-black p-4 flex items-center justify-between">
+                    <div>
+                        <div class="font-bebas text-base tracking-wider text-gray-400">ESTIMATED STASH TOTAL</div>
+                        <div id="wa-calc-breakdown" class="font-barlow text-xs text-gray-400 uppercase tracking-wider">
+                            ₹80 × 1 RIG × 2 HRS
+                        </div>
+                    </div>
+                    <div id="wa-estimated-total" class="gta-cash text-4xl">
+                        ₹160
+                    </div>
+                </div>
+
+                <!-- Submit to WhatsApp Button -->
+                <button type="submit" class="w-full gta-btn bg-gtaGreen hover:bg-viceAmber text-black font-bebas text-2xl tracking-wider py-3.5 flex items-center justify-center gap-2.5">
+                    <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/>
+                    </svg>
+                    <span>SEND BOOKING TO WHATSAPP</span>
+                </button>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- 10. CLASSIC GTA "MISSION PASSED!" OVERLAY BANNER                    -->
+    <!-- =================================================================== -->
+    <div id="mission-passed-overlay" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-xs p-4 flex items-center justify-center">
+        <div class="w-full max-w-lg comic-pop-anim">
+            <div class="bg-asphalt border-4 border-black shadow-[10px_10px_0_#000] p-6 sm:p-8 text-center halftone-bg">
+                <div id="mp-headline" class="gta-title text-4xl sm:text-5xl text-viceAmber leading-none mb-1">
+                    MISSION PASSED!
+                </div>
+                <div id="mp-respect" class="gta-title-sm text-2xl sm:text-3xl text-crispWhite tracking-widest mb-4">
+                    RESPECT <span class="text-gtaGreen">+</span>
+                </div>
+
+                <div class="bg-panelDark border-4 border-black p-4 mb-6">
+                    <div id="mp-subtitle" class="font-bebas text-xl text-policeBlue tracking-wider mb-1">
+                        WHATSAPP DISPATCH SENT
+                    </div>
+                    <p id="mp-message" class="text-gray-200 text-sm leading-relaxed">
+                        Your booking dispatch has been opened in WhatsApp.
+                    </p>
+                </div>
+
+                <button id="close-mp-btn" type="button" class="gta-btn bg-gtaGreen hover:bg-crispWhite text-black font-bebas text-2xl tracking-wider px-8 py-2.5">
+                    CONTINUE
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- JAVASCRIPT: CONFIG, MAP TOGGLE, WHATSAPP DISPATCH & HUD LOGIC       -->
+    <!-- =================================================================== -->
+    <script>
+        // ===================================================================
+        // 1. CENTRALIZED CAFE CONFIGURATION (EDIT PHONE & MAPS HERE)
+        // ===================================================================
+        const CAFE_CONFIG = {
+            whatsappNumber: "919876543210",
+            displayPhone: "+91 98765 43210",
+            cafeName: "GRAND THEFT GAMING",
+            address: "2nd Floor, Vice Plaza, Station Road, Talegaon Dabhade, Pune, Maharashtra 410507",
+            mapsDirectUrl: "https://www.google.com/maps/search/?api=1&query=Talegaon+Dabhade+Pune+Maharashtra",
+            mapsEmbedUrl: "https://maps.google.com/maps?q=Talegaon+Dabhade,+Maharashtra&t=&z=15&ie=UTF8&iwloc=&output=embed"
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                // Hydrate DOM elements from CAFE_CONFIG
+                document.getElementById('safehouse-cafe-name').textContent = CAFE_CONFIG.cafeName;
+                document.getElementById('safehouse-address-text').textContent = CAFE_CONFIG.address;
+                document.getElementById('safehouse-phone-text').textContent = CAFE_CONFIG.displayPhone;
+                document.getElementById('open-gmaps-app-link').href = CAFE_CONFIG.mapsDirectUrl;
+
+                // ---------------------------------------------------------------
+                // 2. LIVE GTA HUD DIGITAL CLOCK
+                // ---------------------------------------------------------------
+                const hudClockEl = document.getElementById('gta-hud-clock');
+                function updateHudClock() {
+                    const now = new Date();
+                    const hrs = String(now.getHours()).padStart(2, '0');
+                    const mins = String(now.getMinutes()).padStart(2, '0');
+                    hudClockEl.textContent = `${hrs}:${mins}`;
+                }
+                updateHudClock();
+                setInterval(updateHudClock, 1000);
+
+                // ---------------------------------------------------------------
+                // 3. MOBILE NAVIGATION DRAWER
+                // ---------------------------------------------------------------
+                const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+                const mobileMenu = document.getElementById('mobile-menu');
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+                document.querySelectorAll('.mobile-link').forEach(link => {
+                    link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+                });
+
+                // ---------------------------------------------------------------
+                // 4. INTERACTIVE 5-STAR WANTED LEVEL (SCROLL + ZONE HOVER)
+                // ---------------------------------------------------------------
+                const starsContainer = document.getElementById('wanted-stars-container');
+                const starEls = document.querySelectorAll('.wanted-star');
+                const wantedLabel = document.getElementById('wanted-label');
+                let currentScrollStars = 1;
+                let isHoveringZone = false;
+
+                function setWantedLevel(level, flash = false) {
+                    const clamped = Math.max(1, Math.min(5, level));
+                    starEls.forEach(star => {
+                        const starNum = parseInt(star.getAttribute('data-star'), 10);
+                        star.classList.remove('active-gold', 'active-red', 'inactive');
+                        if (starNum <= clamped) {
+                            // Stars 4-5 escalate into intense red wanted heat
+                            if (clamped >= 4 && starNum >= 4) {
+                                star.classList.add('active-red');
+                            } else {
+                                star.classList.add('active-gold');
+                            }
+                        } else {
+                            star.classList.add('inactive');
+                        }
+                    });
+                    wantedLabel.textContent = `WANTED LVL ${clamped}`;
+                    wantedLabel.className = clamped >= 4
+                        ? 'font-barlow font-bold text-[10px] tracking-widest uppercase text-red-400 leading-none mt-0.5'
+                        : 'font-barlow font-bold text-[10px] tracking-widest uppercase text-viceAmber leading-none mt-0.5';
+
+                    if (flash) {
+                        starsContainer.classList.remove('wanted-flash');
+                        void starsContainer.offsetWidth;
+                        starsContainer.classList.add('wanted-flash');
+                    }
+                }
+
+                window.addEventListener('scroll', () => {
+                    if (isHoveringZone) return;
+                    const scrollTop = window.scrollY;
+                    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                    const ratio = docHeight > 0 ? scrollTop / docHeight : 0;
+
+                    let newLevel = 1;
+                    if (ratio > 0.78) newLevel = 5;
+                    else if (ratio > 0.56) newLevel = 4;
+                    else if (ratio > 0.34) newLevel = 3;
+                    else if (ratio > 0.14) newLevel = 2;
+
+                    if (newLevel !== currentScrollStars) {
+                        currentScrollStars = newLevel;
+                        setWantedLevel(currentScrollStars, true);
+                    }
+                }, { passive: true });
+
+                document.querySelectorAll('.zone-card').forEach(card => {
+                    card.addEventListener('mouseenter', () => {
+                        isHoveringZone = true;
+                        const stars = parseInt(card.getAttribute('data-stars'), 10) || 1;
+                        setWantedLevel(stars, true);
+                    });
+                    card.addEventListener('mouseleave', () => {
+                        isHoveringZone = false;
+                        setWantedLevel(currentScrollStars, false);
+                    });
+                });
+
+                // ---------------------------------------------------------------
+                // 5. GAMING ZONES FILTER PILLS
+                // ---------------------------------------------------------------
+                const zoneFilterBtns = document.querySelectorAll('.zone-filter-btn');
+                const zoneCards = document.querySelectorAll('.zone-card');
+
+                zoneFilterBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const filter = btn.getAttribute('data-filter');
+                        zoneFilterBtns.forEach(b => {
+                            b.classList.remove('bg-viceAmber', 'text-black');
+                            b.classList.add('bg-panelDark', 'text-crispWhite');
+                        });
+                        btn.classList.remove('bg-panelDark', 'text-crispWhite');
+                        btn.classList.add('bg-viceAmber', 'text-black');
+
+                        zoneCards.forEach(card => {
+                            const cat = card.getAttribute('data-category');
+                            if (filter === 'all' || cat === filter) {
+                                card.classList.remove('hidden');
+                            } else {
+                                card.classList.add('hidden');
+                            }
+                        });
+                    });
+                });
+
+                // ---------------------------------------------------------------
+                // 6. ACTIVE MISSIONS (GAME LIBRARY) RENDER & FILTER
+                // ---------------------------------------------------------------
+                const gamesData = [
+                    {
+                        title: 'GTA V & FiveM Indian RP',
+                        genre: 'open-world',
+                        badge: 'OPEN WORLD / RP',
+                        mode: 'Custom Indian RP Servers',
+                        gradient: 'from-[#EC4899] to-[#F59E0B]',
+                        icon: `<circle cx="150" cy="60" r="28" fill="#FDE047"/><path d="M40,110 L90,82 L210,82 L260,110 Z" fill="#0B0C10"/><text x="150" y="67" text-anchor="middle" fill="#000" font-family="Anton" font-size="20">RP</text>`
+                    },
+                    {
+                        title: 'Valorant',
+                        genre: 'fps',
+                        badge: 'FPS / TACTICAL',
+                        mode: '360Hz Mumbai Server Ready',
+                        gradient: 'from-[#EC4899] to-[#14161D]',
+                        icon: `<polygon points="105,30 150,90 130,90 95,45" fill="#F8FAFC"/><polygon points="195,30 150,90 170,90 205,45" fill="#38BDF8"/>`
+                    },
+                    {
+                        title: 'Counter-Strike 2',
+                        genre: 'fps',
+                        badge: 'FPS / TACTICAL',
+                        mode: 'Premier & Faceit 400+ FPS',
+                        gradient: 'from-[#F59E0B] to-[#14161D]',
+                        icon: `<circle cx="150" cy="60" r="26" stroke="#F8FAFC" stroke-width="5" fill="none"/><line x1="150" y1="24" x2="150" y2="96" stroke="#F59E0B" stroke-width="4"/><line x1="114" y1="60" x2="186" y2="60" stroke="#F59E0B" stroke-width="4"/>`
+                    },
+                    {
+                        title: 'EA Sports FC 25',
+                        genre: 'sports-racing',
+                        badge: 'SPORTS & RACING',
+                        mode: 'PS5 Pro 4K 120Hz Couch Co-Op',
+                        gradient: 'from-[#38BDF8] to-[#14161D]',
+                        icon: `<circle cx="150" cy="60" r="26" fill="#F8FAFC" stroke="#000" stroke-width="4"/><polygon points="150,46 163,56 158,71 142,71 137,56" fill="#000"/>`
+                    },
+                    {
+                        title: 'Tekken 8',
+                        genre: 'sports-racing',
+                        badge: 'SPORTS & RACING',
+                        mode: '1v1 Arcade & LAN Showdowns',
+                        gradient: 'from-[#EC4899] to-[#4C1D95]',
+                        icon: `<polygon points="125,25 165,25 145,58 178,58 130,98 145,66 115,66" fill="#FDE047" stroke="#000" stroke-width="3"/>`
+                    },
+                    {
+                        title: 'Gran Turismo 7',
+                        genre: 'sports-racing',
+                        badge: 'SPORTS & RACING',
+                        mode: 'Logitech G923 Wheel Cockpit',
+                        gradient: 'from-[#F59E0B] to-[#EC4899]',
+                        icon: `<circle cx="150" cy="60" r="28" fill="none" stroke="#F8FAFC" stroke-width="7"/><line x1="122" y1="60" x2="178" y2="60" stroke="#38BDF8" stroke-width="5"/>`
+                    },
+                    {
+                        title: 'Apex Legends',
+                        genre: 'fps',
+                        badge: 'FPS / TACTICAL',
+                        mode: '3-Stack Battle Royale Ranked',
+                        gradient: 'from-[#27AE60] to-[#0B0C10]',
+                        icon: `<polygon points="150,25 185,88 115,88" fill="none" stroke="#27AE60" stroke-width="5"/><circle cx="150" cy="66" r="8" fill="#F8FAFC"/>`
+                    },
+                    {
+                        title: 'Cyberpunk 2077',
+                        genre: 'open-world',
+                        badge: 'OPEN WORLD / RP',
+                        mode: 'RTX 4080 Super Ray-Tracing',
+                        gradient: 'from-[#F59E0B] to-[#0B0C10]',
+                        icon: `<rect x="115" y="34" width="70" height="52" rx="6" fill="none" stroke="#38BDF8" stroke-width="5"/><text x="150" y="67" text-anchor="middle" fill="#FDE047" font-family="Anton" font-size="22">2077</text>`
+                    }
+                ];
+
+                const gamesGrid = document.getElementById('games-grid');
+                const gameFilterBtns = document.querySelectorAll('.game-filter-btn');
+
+                function renderGames(genreFilter) {
+                    const filtered = genreFilter === 'all'
+                        ? gamesData
+                        : gamesData.filter(g => g.genre === genreFilter);
+
+                    gamesGrid.innerHTML = filtered.map(game => `
+                        <div class="gta-panel gta-panel-hover bg-panelDark overflow-hidden flex flex-col justify-between">
+                            <div>
+                                <div class="relative h-28 bg-gradient-to-br ${game.gradient} border-b-4 border-black halftone-bg">
+                                    <svg viewBox="0 0 300 120" class="w-full h-full">
+                                        ${game.icon}
+                                    </svg>
+                                    <span class="absolute top-2 left-2 bg-black text-crispWhite font-bebas text-xs px-2 py-0.5 tracking-wider">
+                                        ${game.badge}
+                                    </span>
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="font-bebas text-2xl text-crispWhite tracking-wide leading-tight">${game.title}</h3>
+                                    <p class="font-barlow font-semibold text-xs text-policeBlue uppercase tracking-wider mt-1">
+                                        ${game.mode}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="bg-asphalt border-t-2 border-black px-4 py-2 flex items-center justify-between font-barlow font-bold text-xs text-gtaGreen uppercase">
+                                <span>● READY TO LAUNCH</span>
+                                <span class="text-gray-400">PRE-LOADED</span>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+
+                gameFilterBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        gameFilterBtns.forEach(b => {
+                            b.classList.remove('bg-policeBlue', 'text-black');
+                            b.classList.add('bg-panelDark', 'text-crispWhite');
+                        });
+                        btn.classList.remove('bg-panelDark', 'text-crispWhite');
+                        btn.classList.add('bg-policeBlue', 'text-black');
+                        renderGames(btn.getAttribute('data-genre'));
+                    });
+                });
+
+                renderGames('all');
+
+                // ---------------------------------------------------------------
+                // 7. SAFEHOUSE CLICK-TO-OPEN REAL GOOGLE MAPS IN SAME PANEL
+                // ---------------------------------------------------------------
+                const gtaRadarView = document.getElementById('gta-radar-view');
+                const realGpsView = document.getElementById('real-gps-view');
+                const realGmapsIframe = document.getElementById('real-gmaps-iframe');
+                const backToRadarBtn = document.getElementById('back-to-radar-btn');
+
+                function activateRealGpsMap() {
+                    if (!realGmapsIframe.getAttribute('src')) {
+                        realGmapsIframe.setAttribute('src', CAFE_CONFIG.mapsEmbedUrl);
+                    }
+                    gtaRadarView.classList.add('hidden');
+                    realGpsView.classList.remove('hidden');
+                }
+
+                function showGtaRadarMap() {
+                    realGpsView.classList.add('hidden');
+                    gtaRadarView.classList.remove('hidden');
+                }
+
+                gtaRadarView.addEventListener('click', activateRealGpsMap);
+                gtaRadarView.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        activateRealGpsMap();
+                    }
+                });
+                backToRadarBtn.addEventListener('click', showGtaRadarMap);
+
+                // ---------------------------------------------------------------
+                // 8. GTA "MISSION PASSED!" OVERLAY BANNER & COPY PHONE NUMBER
+                // ---------------------------------------------------------------
+                const mpOverlay = document.getElementById('mission-passed-overlay');
+                const mpHeadline = document.getElementById('mp-headline');
+                const mpRespect = document.getElementById('mp-respect');
+                const mpSubtitle = document.getElementById('mp-subtitle');
+                const mpMessage = document.getElementById('mp-message');
+                const closeMpBtn = document.getElementById('close-mp-btn');
+
+                window.triggerMissionPassed = function(headline, respectText, subtitle, message) {
+                    mpHeadline.textContent = headline || 'MISSION PASSED!';
+                    mpRespect.innerHTML = respectText || 'RESPECT <span class="text-gtaGreen">+</span>';
+                    mpSubtitle.textContent = subtitle || 'DISPATCH CONFIRMED';
+                    mpMessage.textContent = message || '';
+                    mpOverlay.classList.remove('hidden');
+                };
+
+                closeMpBtn.addEventListener('click', () => mpOverlay.classList.add('hidden'));
+                mpOverlay.addEventListener('click', (e) => {
+                    if (e.target === mpOverlay) mpOverlay.classList.add('hidden');
+                });
+
+                // Copy Phone Number Button (iFrame-safe document.execCommand fallback)
+                const copyPhoneBtn = document.getElementById('copy-phone-btn');
+                copyPhoneBtn.addEventListener('click', () => {
+                    const phoneText = CAFE_CONFIG.displayPhone;
+                    const tempInput = document.createElement('input');
+                    tempInput.value = phoneText;
+                    document.body.appendChild(tempInput);
+                    tempInput.select();
+                    try {
+                        document.execCommand('copy');
+                    } catch (err) {
+                        if (navigator.clipboard) {
+                            navigator.clipboard.writeText(phoneText).catch(() => {});
+                        }
+                    }
+                    document.body.removeChild(tempInput);
+
+                    triggerMissionPassed(
+                        'MISSION PASSED!',
+                        'NUMBER COPIED <span class="text-gtaGreen">+RESPECT</span>',
+                        'SAFEHOUSE HOTLINE COPIED',
+                        `${phoneText} copied to clipboard. Call or message us on WhatsApp anytime!`
+                    );
+                });
+
+                // ---------------------------------------------------------------
+                // 9. INTERACTIVE WHATSAPP BOOKING MODAL & DISPATCH LOGIC
+                // ---------------------------------------------------------------
+                const waModal = document.getElementById('whatsapp-booking-modal');
+                const closeWaModalBtn = document.getElementById('close-wa-modal-btn');
+                const waBookingForm = document.getElementById('wa-booking-form');
+                const waZoneSelect = document.getElementById('wa-zone-select');
+                const waRigsSelect = document.getElementById('wa-rigs-select');
+                const waDurationSelect = document.getElementById('wa-duration-select');
+                const waDateInput = document.getElementById('wa-date-input');
+                const waTimeSelect = document.getElementById('wa-time-select');
+                const waGamertagInput = document.getElementById('wa-gamertag-input');
+                const waEstimatedTotal = document.getElementById('wa-estimated-total');
+                const waCalcBreakdown = document.getElementById('wa-calc-breakdown');
+
+                // Set default booking date to today
+                const todayIso = new Date().toISOString().split('T')[0];
+                waDateInput.value = todayIso;
+                waDateInput.min = todayIso;
+
+                function updateWhatsAppTotal() {
+                    const selectedOption = waZoneSelect.options[waZoneSelect.selectedIndex];
+                    const rate = parseInt(selectedOption.getAttribute('data-rate'), 10) || 80;
+                    const itemType = selectedOption.getAttribute('data-type');
+                    const rigs = parseInt(waRigsSelect.value, 10) || 1;
+
+                    if (itemType === 'pass') {
+                        const passHours = selectedOption.getAttribute('data-hours') || '3';
+                        waDurationSelect.disabled = true;
+                        waDurationSelect.classList.add('opacity-50');
+                        const total = rate * rigs;
+                        waEstimatedTotal.textContent = `₹${total}`;
+                        waCalcBreakdown.textContent = `₹${rate} PASS × ${rigs} PLAYER${rigs > 1 ? 'S' : ''} (${passHours} HRS PACK)`;
+                    } else {
+                        waDurationSelect.disabled = false;
+                        waDurationSelect.classList.remove('opacity-50');
+                        const hrs = parseInt(waDurationSelect.value, 10) || 1;
+                        const total = rate * rigs * hrs;
+                        waEstimatedTotal.textContent = `₹${total}`;
+                        waCalcBreakdown.textContent = `₹${rate} × ${rigs} RIG${rigs > 1 ? 'S' : ''} × ${hrs} HR${hrs > 1 ? 'S' : ''}`;
+                    }
+                }
+
+                waZoneSelect.addEventListener('change', updateWhatsAppTotal);
+                waRigsSelect.addEventListener('change', updateWhatsAppTotal);
+                waDurationSelect.addEventListener('change', updateWhatsAppTotal);
+                updateWhatsAppTotal();
+
+                window.openWhatsAppModal = function(preselectedValue) {
+                    if (preselectedValue) {
+                        for (let i = 0; i < waZoneSelect.options.length; i++) {
+                            if (waZoneSelect.options[i].value === preselectedValue) {
+                                waZoneSelect.selectedIndex = i;
+                                break;
+                            }
+                        }
+                    }
+                    updateWhatsAppTotal();
+                    waModal.classList.remove('hidden');
+                };
+
+                closeWaModalBtn.addEventListener('click', () => waModal.classList.add('hidden'));
+                waModal.addEventListener('click', (e) => {
+                    if (e.target === waModal) waModal.classList.add('hidden');
+                });
+
+                // Submit Booking Form -> Open WhatsApp with Pre-Filled Message
+                waBookingForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const selectedOption = waZoneSelect.options[waZoneSelect.selectedIndex];
+                    const zoneOrPass = selectedOption.value;
+                    const itemType = selectedOption.getAttribute('data-type');
+                    const rigs = waRigsSelect.value;
+                    const durationText = itemType === 'pass'
+                        ? `${selectedOption.getAttribute('data-hours')} Hours (Combo Pass)`
+                        : `${waDurationSelect.value} Hour(s)`;
+                    const dateVal = waDateInput.value;
+                    const timeVal = waTimeSelect.value;
+                    const gamertag = waGamertagInput.value.trim() || 'Player';
+                    const totalText = waEstimatedTotal.textContent;
+
+                    const messageLines = [
+                        `🎮 *${CAFE_CONFIG.cafeName} — RIG BOOKING DISPATCH*`,
+                        `━━━━━━━━━━━━━━━━━━━━`,
+                        `👤 *Gamertag:* ${gamertag}`,
+                        `🕹️ *Zone / Pass:* ${zoneOrPass}`,
+                        `🖥️ *Rigs / Players:* ${rigs}`,
+                        `📅 *Date:* ${dateVal}`,
+                        `⏰ *Time Slot:* ${timeVal}`,
+                        `⏳ *Duration:* ${durationText}`,
+                        `💵 *Estimated Total:* ${totalText}`,
+                        `━━━━━━━━━━━━━━━━━━━━`,
+                        `Please confirm availability at the Safehouse!`
+                    ];
+
+                    const encodedMsg = encodeURIComponent(messageLines.join('\n'));
+                    const waUrl = `https://wa.me/${CAFE_CONFIG.whatsappNumber}?text=${encodedMsg}`;
+
+                    window.open(waUrl, '_blank', 'noopener,noreferrer');
+                    waModal.classList.add('hidden');
+
+                    triggerMissionPassed(
+                        'MISSION PASSED!',
+                        'WHATSAPP DISPATCH SENT <span class="text-gtaGreen">+</span>',
+                        `${gamertag.toUpperCase()} // ${totalText}`,
+                        `Your booking request for ${zoneOrPass} (${rigs} rig(s) at ${timeVal}) has been launched in WhatsApp!`
+                    );
+                });
+
+                // Direct Tournament Squad Registration via WhatsApp
+                window.registerTournamentWhatsApp = function(eventName) {
+                    const messageLines = [
+                        `🏆 *${CAFE_CONFIG.cafeName} — HEIST TOURNAMENT REGISTRATION*`,
+                        `━━━━━━━━━━━━━━━━━━━━`,
+                        `🔥 *Event:* ${eventName}`,
+                        `👥 *Squad / Player Name:* [Enter Your Team Name]`,
+                        `📱 *Captain Contact:* [Enter Number]`,
+                        `━━━━━━━━━━━━━━━━━━━━`,
+                        `We want to lock our squad slot for this weekend's LAN event!`
+                    ];
+
+                    const encodedMsg = encodeURIComponent(messageLines.join('\n'));
+                    const waUrl = `https://wa.me/${CAFE_CONFIG.whatsappNumber}?text=${encodedMsg}`;
+
+                    window.open(waUrl, '_blank', 'noopener,noreferrer');
+
+                    triggerMissionPassed(
+                        'MISSION PASSED!',
+                        'WHATSAPP DISPATCH SENT <span class="text-gtaGreen">+</span>',
+                        'HEIST SQUAD REGISTRATION',
+                        `WhatsApp opened with your registration dispatch for ${eventName}!`
+                    );
+                };
+
+            } catch (error) {
+                console.error('GRAND THEFT GAMING Initialization Error:', error);
+            }
+        });
+    </script>
+</body>
+</html>
